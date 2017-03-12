@@ -1,0 +1,5 @@
+*.pyc
+venv
+app.spec
+build
+dist/
