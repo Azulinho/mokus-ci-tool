@@ -25,10 +25,24 @@ def _create_gitlab_ci_job_config(project_name, template, git_url):
         'project_name': project_name,
         'git_url': git_url,
     }
-    with open('gitlab-ci.yml', 'w') as f:
-        gitlab_ci_job_config = _render_template(template, context)
+    with open('.gitlab-ci.yml', 'w') as f:
+        gitlab_ci_job_config = _render_template(
+            "%s.gitlab.ci.jinja2" % template, context
+        )
         f.write(gitlab_ci_job_config)
 
+def _create_makefile(project_name, template, git_url):
+    # grab the template for type 'template'
+    # and populate it with 'project_name' and 'git_url'
+    context = {
+        'project_name': project_name,
+        'git_url': git_url,
+    }
+    with open('Makefile', 'w') as f:
+        makefile = _render_template(
+            "%s.makefile.jinja2" % template, context
+        )
+        f.write(makefile)
 
 def _build_docker_image(project_name):
     subprocess.call(
@@ -40,6 +54,7 @@ def _build_docker_image(project_name):
 
 def new(project_name, template, git_url):
     _create_gitlab_ci_job_config(project_name, template, git_url)
+    _create_makefile(project_name, template, git_url)
     #create_skeleton(template) # generates local skeleton for type of app
 
 
