@@ -44,11 +44,6 @@ def _create_makefile(project_name, template, git_url):
         )
         f.write(makefile)
 
-def _build_docker_image(project_name):
-    subprocess.call(
-        [ 'docker' , 'build', '-t', project_name ]
-    )
-
 
 # public methods
 
@@ -56,19 +51,4 @@ def new(project_name, template, git_url):
     _create_gitlab_ci_job_config(project_name, template, git_url)
     _create_makefile(project_name, template, git_url)
     #create_skeleton(template) # generates local skeleton for type of app
-
-
-def build(project_name, template, git_url):
-    # run the build steps locally for 'template'
-    # do we need this ?
-    # should we just use the template???
-    # only reasone we would need a 'build' option is to support local builds
-    # but that will require us to update this code when 'hacking' around.
-
-    if template == 'marathon-docker-app':
-        _build_docker_image(project_name)
-
-
-
-
 
