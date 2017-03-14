@@ -7,7 +7,6 @@ before_script:
   - apt-get install -y make python-dev python-pip python-virtualenv
 
 make_all:
-  stage: clean
   script:
     - make clean
     - make setup
@@ -28,5 +27,4 @@ make_all:
   artifacts:
     paths:
       - artifacts/mokus-ci-tool
-
 
