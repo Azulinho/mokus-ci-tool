@@ -15,8 +15,8 @@ make_all:
     - make package
     - make publish
   tags:
-    - shell
-    - build-as-docker
+    - docker
+    - build-in-docker
   cache:
     key: "$CI_BUILD_REF"
     paths:
