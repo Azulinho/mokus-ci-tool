@@ -2,87 +2,18 @@
 
 # {{ git_url }}
 
-stages:
-  - clean
-  - setup
-  - build
-  - test
-  - package
-  - publish
-
 before_script:
   - apt-get update
   - apt-get install -y make python-dev python-pip python-virtualenv
 
-make_clean:
+make_all:
   stage: clean
   script:
     - make clean
-  tags:
-    - shell
-    - build-as-docker
-  cache:
-    key: "$CI_BUILD_REF"
-    paths:
-      - artifacts/
-      - venv/
-      - build/
-      - dist/
-
-make_setup:
-  stage: setup
-  script:
     - make setup
-  tags:
-    - shell
-    - build-as-docker
-  cache:
-    key: "$CI_BUILD_REF"
-    paths:
-      - venv/
-
-make_build:
-  stage: build
-  script:
     - make build
-  tags:
-    - shell
-    - build-as-docker
-  cache:
-    key: "$CI_BUILD_REF"
-    paths:
-      - venv/
-      - build/
-      - dist/
-
-make_test:
-  stage: test
-  script:
     - make test
-  tags:
-    - shell
-    - build-as-docker
-  cache:
-    key: "$CI_BUILD_REF"
-    paths:
-      - dist/
-
-make_package:
-  stage: package
-  script:
     - make package
-  tags:
-    - shell
-    - build-as-docker
-  cache:
-    key: "$CI_BUILD_REF"
-    paths:
-      - dist/
-      - artifacts/
-
-make_publish:
-  stage: publish
-  script:
     - make publish
   tags:
     - shell
@@ -91,6 +22,9 @@ make_publish:
     key: "$CI_BUILD_REF"
     paths:
       - artifacts/
+      - venv/
+      - build/
+      - dist/
   artifacts:
     paths:
       - artifacts/mokus-ci-tool
