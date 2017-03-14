@@ -17,13 +17,6 @@ make_all:
   tags:
     - docker
     - build-in-docker
-  cache:
-    key: "$CI_BUILD_REF"
-    paths:
-      - artifacts/
-      - venv/
-      - build/
-      - dist/
   artifacts:
     paths:
       - artifacts/mokus-ci-tool
