@@ -1,0 +1,16 @@
+# vim:filetype=yaml
+
+# {{ git_url }}
+
+before_script:
+  - apt-get update
+  - apt-get install -y make
+
+make_all:
+  script:
+    - make clean
+    - make build
+    - make publish
+  tags:
+    - shell
+    - build-as-docker
