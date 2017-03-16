@@ -19,7 +19,8 @@ Options:
 
 executing:
 
-``` mokus-ci-tool new --template docker-app --project-name docker-myapp --git-url <gitlab url for my project>
+``` 
+mokus-ci-tool new --template docker-app --project-name docker-myapp --git-url <gitlab url for my project>
 ```
 
 will generate a .gitlab-ci.yml and a Makefile locally 
