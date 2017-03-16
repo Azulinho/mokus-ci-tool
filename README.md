@@ -1,4 +1,1 @@
-type make to build the tool
-
-executable available under dist.
-
+Download the latest mokus-ci-tool from: https://git.mokus.io/assembly/mokus-ci-tool/pipelines
