@@ -1,0 +1,42 @@
+---
+
+
+# local is expanded by make to the correct commit id during a make deploy
+apps:
+  app:
+    # CI build ref must be set by JENKINS, so what do we do here?
+    id: "/ci-builds/{{ project_name }}/local/app"
+    cpus: 0.01 
+    # TODO: these will have to be adjusted
+    mem: 64
+    instances: 1
+    container:
+      type: DOCKER
+      docker:
+        image: "docker-registry.mokus.io/{{ project_name }}:local"
+        network: BRIDGE
+        portMappings:
+        - containerPort: 80
+          protocol: tcp
+          name: http
+          labels:
+            # {{ project_name }} will be accessible on: 
+            # ci-builds-{{project_name}}-<ci_build_ref or local>.marathon.l4lb.thisdcos.directory:6379
+            VIP_0: "{{ project_name }}-local:80"
+    env:
+      ENV_VAR: notset
+    healthChecks:
+    - protocol: TCP
+      portIndex: 0
+      gracePeriodSeconds: 300
+      intervalSeconds: 60
+      timeoutSeconds: 20
+      maxConsecutiveFailures: 3
+      ignoreHttp1xx: false
+    upgradeStrategy:
+      maximumOverCapacity: 0
+      minimumHealthCapacity: 0
+
+    # add docker credentials to docker-registry.mokus.io
+    fetch:
+    - uri: "file:///etc/docker.tar.gz"

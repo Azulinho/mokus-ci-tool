@@ -44,11 +44,24 @@ def _create_makefile(project_name, template, git_url):
         )
         f.write(makefile)
 
+def _create_marathon_file(project_name, template, git_url):
+    # grab the template for type 'template'
+    # and populate it with 'project_name' and 'git_url'
+    context = {
+        'project_name': project_name,
+        'git_url': git_url
+    }
+    with open('marathon.yaml', 'w') as f:
+        marathon_file = _render_template(
+            "%s.marathon.jinja2" % template, context
+        )
+        f.write(marathon_file)
+
 
 # public methods
-
 def new(project_name, template, git_url):
     _create_gitlab_ci_job_config(project_name, template, git_url)
     _create_makefile(project_name, template, git_url)
+    _create_marathon_file(project_name, template, git_url)
     #create_skeleton(template) # generates local skeleton for type of app
 
