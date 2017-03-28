@@ -22,7 +22,7 @@ deploy: yaml2json marathonctl jq
 	sed -i s/local/$(CI_BUILD_REF)/g marathon.yaml
 	mkdir -p output
 	cat marathon.yaml | ./yaml2json | ./jq '.apps.app' > output/app.json
-	./marathonctl --host http://marathon.mesos:8080 deploy output/app.json | tail
+	./marathonctl --host http://marathon.mesos:8080 deploy output/app.json 2>&1 | tail
 
 destroy: marathonctl
 	echo "destroying marathon service: ci-builds/{{ project_name }}/$(CI_BUILD_REF)/docker-app"
