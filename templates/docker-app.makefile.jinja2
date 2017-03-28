@@ -26,7 +26,7 @@ deploy: yaml2json marathonctl jq
 
 destroy: marathonctl
 	echo "destroying marathon service: ci-builds/{{ project_name }}/$(CI_BUILD_REF)/docker-app"
-	curl -X DELETE http://marathon.mesos:8080//v2/apps/ci-builds/{{ project_name }}/$(CI_BUILD_REF)/app?force=true
+	curl -X DELETE http://marathon.mesos:8080/v2/apps/ci-builds/{{ project_name }}/$(CI_BUILD_REF)/app?force=true
 	
 yaml2json:
 	@wget -O yaml2json -c https://github.com/bronze1man/yaml2json/blob/master/builds/linux_amd64/yaml2json?raw=true
