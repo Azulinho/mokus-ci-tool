@@ -16,15 +16,23 @@ publish:
 	docker login --username=$(DOCKER_REGISTRY_USERNAME) --password=$(DOCKER_REGISTRY_PASSWORD)  $(DOCKER_REGISTRY_ENDPOINT)
 	docker push $(DOCKER_REGISTRY_ENDPOINT)/{{ project_name }}:$(CI_BUILD_REF)
 
-deploy: yaml2json
+deploy: yaml2json marathonctl
 	echo "deploying marathon service: ci-builds/{{ project_name }}/$(CI_BUILD_REF)/docker-app"
 	# update marathon.json file with correct CI_BUILD_REF
 	sed -i s/local/$(CI_BUILD_REF)/g marathon.yaml
 	mkdir -p output
 	cat marathon.yaml | ./yaml2json | jq '.apps.app' > output/app.json
+	./marathonctl --host http://marathon.mesos:8080 deploy output/app.json
 
-
+destroy: marathonctl
+	echo "destroying marathon service: ci-builds/{{ project_name }}/$(CI_BUILD_REF)/docker-app"
+	curl -X DELETE http://marathon.mesos:8080//v2/apps/ci-builds/{{ project_name }}/$(CI_BUILD_REF)/app?force=true
+	
 yaml2json:
 	@wget -O yaml2json -c https://github.com/bronze1man/yaml2json/blob/master/builds/linux_amd64/yaml2json?raw=true
 	@chmod 755 yaml2json
-	
+
+
+marathonctl:
+	@wget -O marathonctl -c https://github.com/ashwanthkumar/marathonctl/releases/download/v0.0.3-fix/marathonctl-linux-amd64	
+	@chmod 755 marathonctl

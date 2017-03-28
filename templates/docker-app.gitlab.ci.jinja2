@@ -2,11 +2,16 @@
 
 # {{ git_url }}
 
+stages:
+  - build
+  - make
+
 before_script:
   - apt-get update
   - apt-get install -y make
 
 make_all:
+  stage: make
   script:
     - make clean
     - make build
@@ -15,3 +20,12 @@ make_all:
   tags:
     - shell
     - build-as-docker
+
+cleanup:
+  stage: cleanup
+  script:
+    - make destroy
+  tags:
+    - shell
+    - build-as-docker
+  when: always 
