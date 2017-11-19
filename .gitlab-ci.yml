@@ -1,23 +1,31 @@
 # vim:filetype=yaml
 
-# {{ git_url }}
+# asdkfj
+
+stages:
+  - build
+  - make
 
 before_script:
   - apt-get update
-  - apt-get install -y make python-dev python-pip python-virtualenv
+  - apt-get install -y make
 
 make_all:
+  stage: make
   script:
     - make clean
-    - make setup
     - make build
-    - make test
-    - make package
     - make publish
+    - make deploy
   tags:
-    - docker
-    - build-in-docker
-  artifacts:
-    paths:
-      - artifacts/mokus-ci-tool
+    - shell
+    - build-as-docker
 
+cleanup:
+  stage: cleanup
+  script:
+    - make destroy
+  tags:
+    - shell
+    - build-as-docker
+  when: always 
